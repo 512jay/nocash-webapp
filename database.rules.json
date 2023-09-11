@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        // Allow only authenticated content owners write access to their data
+        ".read": "true",
+        ".write": "auth !== null && auth.uid === $uid"
+      }
+    }
+  }
+}
