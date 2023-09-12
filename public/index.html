@@ -8,15 +8,15 @@
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/10.3.1/firebase-app-compat.js"></script>
     <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/10.3.1/firebase-auth-compat.js"></script>
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-auth-compat.js"></script> -->
     <script defer src="/__/firebase/10.3.1/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/10.3.1/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/10.3.1/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/10.3.1/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/10.3.1/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/10.3.1/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/10.3.1/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/10.3.1/firebase-performance-compat.js"></script>
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-firestore-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-functions-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-messaging-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-storage-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-analytics-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-remote-config-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/10.3.1/firebase-performance-compat.js"></script> -->
     <!-- 
       initialize the SDK after all desired features are loaded, set useEmulator to false
       to avoid connecting the SDK to running emulators.
@@ -40,21 +40,58 @@
   </head>
   <body>
     <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete, You did it!</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+      <h2 id="welcome">Welcome</h2>
+      <p id="the-list">The list goes here</p>
+      <p id="pay-links">Setup some payment links within the app</p>
+      <!-- <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
+      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a> -->
     </div>
     <p id="load">Firebase SDK Loading&hellip;</p>
 
     <script>
+      // Get the URL query parameters from the current page
+      const queryString = window.location.search;
+
+      // Create a URLSearchParams object to parse the query string
+      const params = new URLSearchParams(queryString);
+
+      // Retrieve individual query parameters
+      const param1Value = params.get('id'); // "value1"
+      document.getElementById("welcome").innerHTML = "Welcome, " + param1Value;
+      console.log(param1Value);
+
+
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
         //
         // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        firebase.database().ref('/users/' + param1Value).once('value', snapshot => {
+          let data = snapshot.val();
+          if (data.cashApp)
+            console.log("Cash App: ", data.cashApp.value);
+          if (data.payPal)
+            console.log("Paypal: ", data.payPal.value);
+          if (data.venmo)
+            console.log("Venmo:", data.venmo.value);
+          if (data.custom)
+            console.log("Custom:", data.custom.value);
+          if (data.custom1)
+            console.log("Custom 2:", data.custom1.value);  
+
+          // figuring out links
+          var a = document.createElement('a');
+          var linkText = document.createTextNode("my title text");
+          a.appendChild(linkText);
+          a.title = "my title text";
+          a.href = "http://example.com";
+          document.body.appendChild(a);
+        })
+         .catch(function(error){
+          // Handle any errors that occor
+          console.error("Error fetching data:", error)
+         });
         // firebase.firestore().doc('/foo/bar').get().then(() => { });
         // firebase.functions().httpsCallable('yourFunction')().then(() => { });
         // firebase.messaging().requestPermission().then(() => { });
