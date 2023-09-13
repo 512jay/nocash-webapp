@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <title>Welcome No Cash Tipping App</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/10.3.1/firebase-app-compat.js"></script>
@@ -40,13 +40,10 @@
   </head>
   <body>
     <div id="message">
-      <h2 id="welcome">Welcome</h2>
-      <p id="the-list">The list goes here</p>
-      <p id="pay-links">Setup some payment links within the app</p>
-      <!-- <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a> -->
+      <h2 id="welcome">Welcome, so you want to send value</h2>
+      <p id="pay-links">Here are the ways</p>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+    <!-- <p id="load">Firebase SDK Loading&hellip;</p> -->
 
     <script>
       // Get the URL query parameters from the current page
@@ -57,36 +54,45 @@
 
       // Retrieve individual query parameters
       const param1Value = params.get('id'); // "value1"
-      document.getElementById("welcome").innerHTML = "Welcome, " + param1Value;
-      console.log(param1Value);
-
+      document.getElementById("welcome").innerHTML = "Welcome, to send value to  " + param1Value;
 
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
         //
+
+        const ele = document.getElementById('pay-links');
+        function linkMaker(linkName, linkText){
+          let a = document.createElement('a'); 
+          let textOfLink = document.createTextNode(linkText);
+          a.appendChild(textOfLink);
+          a.title = linkText;
+          a.href = "https://" + linkText;
+          ele.appendChild(a);
+        };
+
         // firebase.auth().onAuthStateChanged(user => { });
         firebase.database().ref('/users/' + param1Value).once('value', snapshot => {
           let data = snapshot.val();
-          if (data.cashApp)
-            console.log("Cash App: ", data.cashApp.value);
+          if (data.cashApp){
+            console.log("Cash App: ", "https://" + data.cashApp.value);
+            linkMaker("CashApp", data.cashApp.value);
+          };
           if (data.payPal)
             console.log("Paypal: ", data.payPal.value);
+            linkMaker("Paypal", data.payPal.value);
           if (data.venmo)
             console.log("Venmo:", data.venmo.value);
+            linkMaker("Venmo", data.venmo.value);
           if (data.custom)
             console.log("Custom:", data.custom.value);
+            linkMaker("Custom", data.custom.value);
           if (data.custom1)
-            console.log("Custom 2:", data.custom1.value);  
+            console.log("Custom 2:", data.custom1.value);
+            linkMaker("Custom2", data.custom1.value);  
 
-          // figuring out links
-          var a = document.createElement('a');
-          var linkText = document.createTextNode("my title text");
-          a.appendChild(linkText);
-          a.title = "my title text";
-          a.href = "http://example.com";
-          document.body.appendChild(a);
+
         })
          .catch(function(error){
           // Handle any errors that occor
