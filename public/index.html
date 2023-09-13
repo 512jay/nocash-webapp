@@ -42,6 +42,7 @@
     <div id="message">
       <h2 id="welcome">Welcome, so you want to send value</h2>
       <p id="pay-links">Here are the ways</p>
+      <a href="download.html">Download the App!</a>
     </div>
     <!-- <p id="load">Firebase SDK Loading&hellip;</p> -->
 
@@ -54,7 +55,10 @@
 
       // Retrieve individual query parameters
       const param1Value = params.get('id'); // "value1"
-      document.getElementById("welcome").innerHTML = "Welcome, to send value to  " + param1Value;
+      if (param1Value == null)
+        document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. ";
+      else
+        document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. To send value to ", param1Value;
 
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
