@@ -60,7 +60,8 @@
 
       // Retrieve individual query parameters
       const param1Value = params.get('id'); // "value1"
-      if (typeof param1Value  != "undefined")
+      console.log(param1Value);
+      if (typeof param1Value == "undefined")
         document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. ";
       else
         document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. To send value to " + param1Value + ". Use one of the following ways below:";
@@ -89,7 +90,7 @@
           let data = snapshot.val();
           console.log(data);
 
-          if (typeof data.cashApp.value  != "undefined"){
+          if (data.hasOwnProperty('cashapp')){
             console.log("CashApp: ",data.cashApp.value);
             const img_link = './images/RGB_CashApp_Logo_Primary_Black.svg';
             const cashtag = data.cashApp.value;
@@ -98,19 +99,19 @@
             }
           };
 
-          if (typeof data.payPal.value  != "undefined"){
+          if (data.hasOwnProperty('paypal')){
             console.log("Paypal: ", data.payPal.value);
             const img_link = 'https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png';
             linkMaker("Paypal", data.payPal.value, img_link);            
           };
 
-          if (typeof data.venmo.value != "undefined"){
+          if (data.hasOwnProperty('venmo')){
             console.log("Venmo:", data.venmo.value);
             const img_link = './images/Venmo_Logo_Blue.png';
             linkMaker("Venmo", data.venmo.value, img_link);            
           };
           
-          if (typeof data.custom.value != "undefined"){
+          if (data.hasOwnProperty('custom')){
             console.log("Custom:", data.custom.value);
             const img_link = './images/icon.png';
             linkMaker("Custom", data.custom.value, img_link, width=100);            
@@ -131,24 +132,24 @@
         //
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
+        // try {
+        //   let app = firebase.app();
+        //   let features = [
+        //     'auth', 
+        //     'database', 
+        //     'firestore',
+        //     'functions',
+        //     'messaging', 
+        //     'storage', 
+        //     'analytics', 
+        //     'remoteConfig',
+        //     'performance',
+        //   ].filter(feature => typeof app[feature] === 'function');
+        //   loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+        // } catch (e) {
+        //   console.error(e);
+        //   loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        // }
       });
     </script>
   </body>
