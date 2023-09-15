@@ -60,7 +60,7 @@
 
       // Retrieve individual query parameters
       const param1Value = params.get('id'); // "value1"
-      if (param1Value == null)
+      if (typeof param1Value  != "undefined")
         document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. ";
       else
         document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. To send value to " + param1Value + ". Use one of the following ways below:";
