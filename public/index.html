@@ -91,21 +91,23 @@
           if (data.cashApp.value){
             const img_link = './images/RGB_CashApp_Logo_Primary_Black.svg';
             const cashtag = data.cashApp.value;
-            if (cashtag.toLowerCase().includes("https://cash.app/$"))
+            if (cashtag.toLowerCase().includes("https://cash.app/$")){
               linkMaker("CashApp", cashtag, img_link);
-            
+            }
           };
+
           if (data.payPal.value){
             console.log("Paypal: ", data.payPal.value);
             const img_link = 'https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png';
             linkMaker("Paypal", data.payPal.value, img_link);            
           };
+
           if (data.venmo.value){
             console.log("Venmo:", data.venmo.value);
             const img_link = './images/Venmo_Logo_Blue.png';
             linkMaker("Venmo", data.venmo.value, img_link);            
           };
-
+          
           if (data.custom.value){
             console.log("Custom:", data.custom.value);
             const img_link = './images/icon.png';
