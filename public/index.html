@@ -61,9 +61,11 @@
         const ele = document.getElementById('pay-links');
         function linkMaker(linkName, linkText, img_link, width=200, height=51){
           let a = document.createElement('a'); 
+          let div = document.createElement('div');
+          a.appendChild(div);
           const myImage = new Image(width, height);
           myImage.src = img_link;
-          a.appendChild(myImage);          
+          div.appendChild(myImage);          
           let textOfLink = document.createTextNode(linkText);
           a.appendChild(textOfLink);
           a.title = linkText;
@@ -75,8 +77,8 @@
           let data = snapshot.val();
           console.log(data);
 
-          if (data.hasOwnProperty('cashApp')){
-            console.log("CashApp: ",data.cashApp.value);
+          if (data.hasOwnProperty('cashApp') && data.cashApp.value != ""){
+            console.log("CashApp: ", data.cashApp.value);
             const img_link = './images/RGB_CashApp_Logo_Primary_Black.svg';
             const cashtag = data.cashApp.value;
             if (cashtag.toLowerCase().includes("https://cash.app/$")){
@@ -84,22 +86,22 @@
             }
           };
 
-          if (data.hasOwnProperty('payPal')){
+          if (data.hasOwnProperty('payPal') && data.payPal.value != ""){
             console.log("Paypal: ", data.payPal.value);
             const img_link = 'https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png';
             linkMaker("Paypal", data.payPal.value, img_link);            
           };
 
-          if (data.hasOwnProperty('venmo')){
+          if (data.hasOwnProperty('venmo') && data.venmo.value != ""){
             console.log("Venmo:", data.venmo.value);
             const img_link = './images/Venmo_Logo_Blue.png';
-            linkMaker("Venmo", data.venmo.value, img_link);            
+            linkMaker("Venmo", data.venmo.value, img_link, width=100);            
           };
           
-          if (data.hasOwnProperty('custom')){
+          if (data.hasOwnProperty('custom') && data.custom.value != ""){
             console.log("Custom:", data.custom.value);
             const img_link = './images/icon.png';
-            linkMaker("Custom", data.custom.value, img_link, width=100);            
+            linkMaker("Custom", data.custom.value, img_link);            
           };
 
         })
