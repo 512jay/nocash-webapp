@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome No Cash Tipping App</title>
+    <title>No Cash Tipping</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/10.3.1/firebase-app-compat.js"></script>
@@ -29,7 +29,7 @@
       #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message a { display: block; text-align: center; text-transform: uppercase; text-decoration: none; color: rgb(0, 0, 0); padding: 16px; border-radius: 4px; margin: 10px; border: 5px }
       #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
       #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
       @media (max-width: 600px) {
@@ -40,9 +40,14 @@
   </head>
   <body>
     <div id="message">
+      <h1>
+        <!-- <img src="./images/icon.png" alt="No Cash Tipping Logo" width="50" height="50" font-size=40px /> -->
+        No Cash Tipping!
+      </h1>
+      
       <h2 id="welcome">Welcome, so you want to send value</h2>
-      <p id="pay-links">Here are the ways</p>
-      <a href="download.html">Download the App!</a>
+      <p id="pay-links"></p>
+      <a href="https://play.google.com/apps/internaltest/4701592053806084618">Download the app... when availible</a>
     </div>
     <!-- <p id="load">Firebase SDK Loading&hellip;</p> -->
 
@@ -58,7 +63,7 @@
       if (param1Value == null)
         document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. ";
       else
-        document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. To send value to ", param1Value;
+        document.getElementById("welcome").innerHTML = "Welcome, to No Cash Tipper App. To send value to " + param1Value + ". Use one of the following ways below:";
 
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
@@ -67,35 +72,45 @@
         //
 
         const ele = document.getElementById('pay-links');
-        function linkMaker(linkName, linkText){
+        function linkMaker(linkName, linkText, img_link, width=200, height=51){
           let a = document.createElement('a'); 
+          const myImage = new Image(width, height);
+          myImage.src = img_link;
+          a.appendChild(myImage);          
           let textOfLink = document.createTextNode(linkText);
           a.appendChild(textOfLink);
           a.title = linkText;
-          a.href = "https://" + linkText;
+          a.href = linkText;
           ele.appendChild(a);
         };
 
         // firebase.auth().onAuthStateChanged(user => { });
         firebase.database().ref('/users/' + param1Value).once('value', snapshot => {
           let data = snapshot.val();
-          if (data.cashApp){
-            console.log("Cash App: ", "https://" + data.cashApp.value);
-            linkMaker("CashApp", data.cashApp.value);
-          };
-          if (data.payPal)
-            console.log("Paypal: ", data.payPal.value);
-            linkMaker("Paypal", data.payPal.value);
-          if (data.venmo)
-            console.log("Venmo:", data.venmo.value);
-            linkMaker("Venmo", data.venmo.value);
-          if (data.custom)
-            console.log("Custom:", data.custom.value);
-            linkMaker("Custom", data.custom.value);
-          if (data.custom1)
-            console.log("Custom 2:", data.custom1.value);
-            linkMaker("Custom2", data.custom1.value);  
 
+          if (data.cashApp.value){
+            const img_link = './images/RGB_CashApp_Logo_Primary_Black.svg';
+            const cashtag = data.cashApp.value;
+            if (cashtag.toLowerCase().includes("https://cash.app/$"))
+              linkMaker("CashApp", cashtag, img_link);
+            
+          };
+          if (data.payPal.value){
+            console.log("Paypal: ", data.payPal.value);
+            const img_link = 'https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png';
+            linkMaker("Paypal", data.payPal.value, img_link);            
+          };
+          if (data.venmo.value){
+            console.log("Venmo:", data.venmo.value);
+            const img_link = './images/Venmo_Logo_Blue.png';
+            linkMaker("Venmo", data.venmo.value, img_link);            
+          };
+
+          if (data.custom.value){
+            console.log("Custom:", data.custom.value);
+            const img_link = './images/icon.png';
+            linkMaker("Custom", data.custom.value, img_link, width=100);            
+          };
 
         })
          .catch(function(error){
