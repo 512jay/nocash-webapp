@@ -74,6 +74,8 @@
         };
 
         firebase.database().ref('/users/' + param1Value).once('value', snapshot => {
+          if (snapshot.val() == null )
+            return;
           let data = snapshot.val();
           console.log(data);
 
